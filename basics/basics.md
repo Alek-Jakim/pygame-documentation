@@ -96,7 +96,7 @@ pygame.quit()
 
 ---
 
-## 3. Blitting (copying) images
+## 3. Blitting (copying) Images
 
 ```python
 import pygame
@@ -139,6 +139,126 @@ while running:
     display_surface.blit(dragon_left_image, dragon_left_rect)
     display_surface.blit(dragon_right_image, dragon_right_rect)
     # Update the display
+    pygame.display.update()
+
+# End the game
+pygame.quit()
+```
+---
+
+## 4. Blitting (copying) Text
+
+```python
+import pygame, os
+
+# Initiate Game
+pygame.init()
+
+# Display Surface
+WIN_WIDTH = 800
+WIN_HEIGHT = 600
+display_surface = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
+pygame.display.set_caption("Blitting Images!")
+
+# Define colors
+GREEN = (0, 255, 0)
+DARK_GREEN = (10, 50, 10)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+
+# Setting up the path
+base_path = os.path.dirname(__file__)
+asset_path = os.path.join(base_path, "assets/")
+
+# See all available system fonts
+fonts = pygame.font.get_fonts()
+for font in fonts:
+    print(font)
+
+# Define Fonts
+system_font = pygame.font.SysFont("calibri", 64)
+custom_font = pygame.font.Font(asset_path + "AttackGraffiti.ttf", 32)
+
+# Define Text (text content, boolean True for antialiasing, color, background(not mandatory))
+# NOTE: When I don't provide a background color, it becomes the same color as the text so it can't be seen.
+system_text = system_font.render("To be or not to be", True, GREEN, DARK_GREEN)
+system_text_rect = system_text.get_rect()
+system_text_rect.center = (WIN_WIDTH // 2, WIN_HEIGHT //2)
+
+custom_text = custom_font.render("Move the dragon soon!", True, WHITE, BLACK)
+custom_text_rect = custom_text.get_rect()
+custom_text_rect.center = (WIN_WIDTH // 2, WIN_HEIGHT // 2 + 100)
+
+
+# Game Loop
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Blit the text onto the screen
+    display_surface.blit(system_text, system_text_rect)
+
+    display_surface.blit(custom_text, custom_text_rect)
+
+    # Update the display
+    pygame.display.update()
+
+# End the game
+pygame.quit()
+```
+
+---
+
+## 5. Adding Sound Effects and Music
+
+```python
+import pygame, os
+
+# Init pygame
+pygame.init()
+
+# Setting up the path
+base_path = os.path.dirname(__file__)
+asset_path = os.path.join(base_path, "assets/")
+
+# Create a display surface
+WIN_WIDTH = 600
+WIN_HEIGHT = 300
+display_surface = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
+pygame.display.set_caption("Adding Sounds and Music")
+
+
+# Load sound effects
+sound_1 = pygame.mixer.Sound(asset_path + "sound_1.wav")
+sound_2 = pygame.mixer.Sound(asset_path + "sound_2.wav")
+
+# Play sound effects 
+sound_1.play()
+# If you don't delay the time (here 2 seconds) it will only play the last sound that is called
+pygame.time.delay(2000)
+
+# Change the volume of a sound effect
+sound_2.set_volume(.1)
+sound_2.play()
+
+# Load background music
+pygame.mixer.music.load(asset_path + "music.wav")
+
+# Play and stop the music
+# pygame.mixer.music.play() takes two arguments, first is how many tims you wanna loop, for example 1, 2, 3 etc (-1 for infinite loop), second argument is when do you want it to start
+pygame.mixer.music.play(-1) 
+pygame.time.delay(5000)
+pygame.mixer.music.stop()
+
+# Game Loop
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
     pygame.display.update()
 
 # End the game
