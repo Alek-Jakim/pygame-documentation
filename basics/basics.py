@@ -8,7 +8,7 @@ pygame.init()
 WIN_WIDTH, WIN_HEIGHT = 800, 600
 WIN_RES = (WIN_WIDTH, WIN_HEIGHT)
 display_surface = pygame.display.set_mode(WIN_RES)
-pygame.display.set_caption("Continuous Keyboard Movement")
+pygame.display.set_caption("Restricted Movement")
 
 # Setting up the path
 base_path = os.path.dirname(__file__)
@@ -32,9 +32,6 @@ dragon_image = pygame.image.load(asset_path + "dragon_right.png")
 dragon_rect = dragon_image.get_rect()
 dragon_rect.center = (WIN_WIDTH // 2, WIN_HEIGHT // 2)
 
-
-
-
 # Game Loop
 running = True
 while running:
@@ -46,13 +43,13 @@ while running:
     keys = pygame.key.get_pressed()
 
     # Move the dragon continuously
-    if keys[pygame.K_LEFT]:
+    if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and dragon_rect.left > 0:
         dragon_rect.x -= VELOCITY
-    if keys[pygame.K_RIGHT]:
+    if (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and dragon_rect.right < WIN_WIDTH:
         dragon_rect.x += VELOCITY
-    if keys[pygame.K_UP]:
+    if (keys[pygame.K_UP] or keys[pygame.K_w]) and dragon_rect.top > 0:
         dragon_rect.y -= VELOCITY
-    if keys[pygame.K_DOWN]:
+    if (keys[pygame.K_DOWN] or keys[pygame.K_s]) and dragon_rect.bottom < WIN_HEIGHT:
         dragon_rect.y += VELOCITY
 
     # Fill the display to avoid mirrored image effect
