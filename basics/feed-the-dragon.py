@@ -91,7 +91,7 @@ dragon_ball_rect.x = WIN_WIDTH + BUFFER_DISTANCE
 dragon_ball_rect.y = random.randint(64, WIN_HEIGHT - 32)
 
 # Game Loop
-#pygame.mixer.music.play(-1, 0.0)
+pygame.mixer.music.play(-1, 0.0)
 running = True
 while running:
     for event in pygame.event.get():
