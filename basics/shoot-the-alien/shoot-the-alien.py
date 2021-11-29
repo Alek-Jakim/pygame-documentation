@@ -4,7 +4,7 @@ pygame.init()
 
 # Setting up the path
 base_path = os.path.dirname(__file__)
-asset_path = os.path.join(base_path, "shoot-the-alien-assets/")
+asset_path = os.path.join(base_path, "assets/")
 
 # Display and resolution
 WIN_WIDTH = 945
