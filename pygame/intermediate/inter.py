@@ -1,68 +1,70 @@
-# A class is like a blueprint for an object
-class Dog():
-    # A Python docstring is a string used to document a Python module, class, function or method
-    """A class to represent a general dog
-    """
-    """"__init__" is a reseved method in python classes. It is known as a constructor in object oriented concepts.
-    """
+import pygame
+import os
+import random
 
-    def __init__(self, name, gender, age):
-        """Initialize attributes"""
-        self.name = name
-        self.gender = gender
-        self.age = age
+# Initialze pygame
+pygame.init()
 
-    """You always have to pass the self parameter to methods"""
+# Set path
 
-    def eat(self):
-        if self.gender == "male":
-            print("Here " + self.name + "! Good boy!")
-        else:
-            print("Here " + self.name + "! Good girl!")
+base_path = os.path.dirname(__file__)
+asset_path = os.path.join(base_path, "game_assets/")
 
-    def bark(self, is_loud):
-        """Get the dog to speak"""
-        if is_loud:
-            print("WOOF WOOF WOOF")
-        else:
-            print("wof")
+# Set display surface
+WIN_WIDTH = 800
+WIN_HEIGHT = 600
+display_surface = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
+pygame.display.set_caption("Sprite Groups!")
 
-    def compute_age(self):
-        """Compute the age in dog years"""
-        dog_years = self.age * 7
-        print(self.name + " is " + str(dog_years) + " years old!")
+# Set FPS and clock
+FPS = 60
+clock = pygame.time.Clock()
+
+# Define Classes
 
 
-class Beagle(Dog):
-    """A class to represent a specific type of dog"""
+class Monster(pygame.sprite.Sprite):
+    """A simple class that represents a monster"""
 
-    def __init__(self, name, gender, age, is_gun_shy):
-        # Call the initialization of the super (parent) class
-        super().__init__(name, gender, age)
-        self.is_gun_shy = is_gun_shy
+    def __init__(self, x, y):
+        # Since this is a subclass of the Sprite class, you have to use super
+        super().__init__()
+        self.image = pygame.image.load(asset_path + "blue_monster.png")
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
 
-    def check_if_shy(self):
-        if self.is_gun_shy:
-            print("no gun pls i am good doggo")
-        else:
-            print("WAAAAR")
+        self.velocity = random.randint(1, 5)
 
-    def hunt(self):
-        if not self.is_gun_shy:
-            self.bark(True)
-            print(self.name + " just brought back a duck.")
-        else:
-            print(self.name + " is a scardy cat.")
-
-    # You can overwrite methods from the parent class, all you have to do is define the method again like below
-    def bark(self, is_loud):
-        if is_loud:
-            print("HOOOOOWLLLL")
+    def update(self):
+        """Update and move the monster"""
+        self.rect.y += self.velocity
 
 
-"""While Beagle has access to its parent class methods, the Dog class does not have access to Beagle's methods"""
-beagle = Beagle("Max", "male", 13, True)
+# Create a monster group and add 10 monsters
+monster_group = pygame.sprite.Group()
+for i in range(10):
+    # Don't forget to pass x and y inside Monster(x, y)
+    monster = Monster(i * 64, 10)
+    monster_group.add(monster)
 
-beagle.check_if_shy()
-beagle.bark(False)
-beagle.hunt()
+# Game Loop
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+            exit()
+
+    # Fill the display
+    display_surface.fill((0, 0, 0))
+
+    # Update and Draw assets
+    monster_group.update()
+    monster_group.draw(display_surface)
+
+    # Update the display and tick the clock
+    pygame.display.update()
+    clock.tick(FPS)
+
+# End the game - this is optional if you have exit() after clicking quit
+pygame.quit()
